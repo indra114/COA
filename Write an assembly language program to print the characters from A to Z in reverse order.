@@ -1,0 +1,16 @@
+ORG 100h
+main proc
+mov ax, @data
+mov ds, ax
+mov cx, 26
+mov dl, &#39;Z&#39;
+print_loop:
+mov ah, 2
+int 21h
+dec dl
+loop print_loop
+mov ah, 4Ch
+
+int 21h
+main endp
+end main
