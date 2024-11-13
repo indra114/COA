@@ -1,0 +1,69 @@
+org 100h
+mov dx,offset msg_input1
+mov ah,09h
+int 21h
+mov ah,01h
+int 21h
+mov bl,al
+cmp al,&#39;0&#39;
+jl NotDigit
+cmp al,&#39;9&#39;
+jg NotDigit
+mov dx,offset msg_output1
+mov ah,09h
+int 21h
+mov dl,bl
+mov ah,02h
+
+int 21h
+mov dx,offset msg_input2
+mov ah,09h
+int 21h
+mov ah,01h
+int 21h
+mov cl,al
+cmp al,&#39;0&#39;
+jl NotDigit
+cmp al,&#39;9&#39;
+jg NotDigit
+mov dx,offset msg_output2
+mov ah,09h
+int 21h
+mov dl,cl
+mov ah,02h
+int 21h
+mov dx,offset msg_sub
+mov ah,09h
+int 21h
+sub bl,cl
+js NegativeResult
+add bl,30h
+mov dl,bl
+mov ah,02h
+int 21h
+jmp endprogram
+NegativeResult:
+mov dl, &#39;-&#39;
+mov ah, 02h
+int 21h
+neg bl
+add bl, 30h
+mov dl, bl
+mov ah, 02h
+int 21h
+jmp endprogram
+NotDigit:
+mov dx,offset msg_error
+mov ah,09h
+int 21h
+endprogram:
+mov ah,4Ch
+int 21h
+msg_input1 DB &quot;enter first digit:$&quot;
+msg_output1 Db 0dh,0ah,&quot;The entered digit is: $&quot;
+msg_input2 DB 0dh,0ah,&quot;enter second digit:$&quot;
+msg_output2 Db 0dh,0ah,&quot;The entered digit is: $&quot;
+
+msg_sub db 0dh,0ah,&quot;The subtraction of given two digits is: $&quot;
+msg_error db 0dh,0ah,&quot;Error: Not a digit!$ &quot;
+END
